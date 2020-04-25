@@ -16,10 +16,15 @@ public class Main {
             LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
             JsonNode node =mapper.readTree(file);
             getKeys("",node, map);
-
             for (Map.Entry<String, String> entry : map.entrySet()) {
-                System.out.println("Key:"+entry.getKey() + ""+"   "+" value:" + entry.getValue());
+                System.out.println(entry.getKey() );
             }
+
+            Scanner scanner=new Scanner(System.in);
+            while (true) {
+                System.out.println(map.get(scanner.next()));
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -36,7 +41,7 @@ public class Main {
         }else if (node.isArray()){
             ArrayNode arrayNode=(ArrayNode) node;
             for(int i=0; i<arrayNode.size(); i++){
-                getKeys(currentpath+i,arrayNode.get(i),map);
+                getKeys(currentpath,arrayNode.get(0),map);
             }
         }
         else if(node.isValueNode()) {
