@@ -11,6 +11,7 @@ public class Main {
      public static void main(String[] args) {
         File file=new File("src/data.json");
         ObjectMapper mapper=new ObjectMapper();
+         Scanner scanner=new Scanner(System.in);
         try {
 
             LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
@@ -19,10 +20,10 @@ public class Main {
             for (Map.Entry<String, String> entry : map.entrySet()) {
                 System.out.println(entry.getKey() );
             }
-
-            Scanner scanner=new Scanner(System.in);
+            System.out.println();
             while (true) {
                 System.out.println(map.get(scanner.next()));
+
             }
 
         } catch (IOException e) {
