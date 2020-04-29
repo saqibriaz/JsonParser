@@ -6,24 +6,25 @@ import com.fasterxml.jackson.databind.node.ValueNode;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-
 public class Main {
-     public static void main(String[] args) {
+    public static void main(String[] args) {
         File file=new File("src/data.json");
         ObjectMapper mapper=new ObjectMapper();
-         Scanner scanner=new Scanner(System.in);
+        Scanner scanner=new Scanner(System.in);
         try {
 
-            LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
+            LinkedHashMap<String,List<String>> map= new LinkedHashMap<String, List<String>>();
             JsonNode node =mapper.readTree(file);
             getKeys("",node, map);
-            for (Map.Entry<String, String> entry : map.entrySet()) {
+            for (Map.Entry<String, List<String>> entry : map.entrySet()) {
                 System.out.println(entry.getKey() );
             }
             System.out.println();
             while (true) {
-                System.out.println(map.get(scanner.next()));
-
+                List<String> n=map.get(scanner.next());
+                for (String s:n) {
+                    System.out.println(s);
+                }
             }
 
         } catch (IOException e) {
@@ -42,12 +43,13 @@ public class Main {
         }else if (node.isArray()){
             ArrayNode arrayNode=(ArrayNode) node;
             for(int i=0; i<arrayNode.size(); i++){
-                getKeys(currentpath,arrayNode.get(0),map);
+                getKeys(currentpath,arrayNode.get(i),map);
             }
-        }
-        else if(node.isValueNode()) {
-            ValueNode valueNode=(ValueNode) node;
-            map.put(currentpath,valueNode.asText());
+        }else if (node.isValueNode()) {
+            ValueNode valueNode = (ValueNode) node;
+            List<String> values = (List<String>) map.getOrDefault(currentpath, new ArrayList<>());
+            values.add(valueNode.asText());
+            map.put(currentpath, values);
         }
     }
 }
